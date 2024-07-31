@@ -4,7 +4,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 # Load the dataset
-file_path = '/Users/dakshagrawal/Documents/GitHub/TroposphericMeasurement/Raw_Data.csv'
+# file_path = '/Users/dakshagrawal/Documents/GitHub/TroposphericMeasurement/Raw_Data.csv'
+file_path = '/Users/Parth/Documents/GitHub/TroposphericMeasurement/Raw_Data.csv'
+
 data = pd.read_csv(file_path)
 
 # Renaming columns for easier access
@@ -12,7 +14,7 @@ data.columns = ['Site-ID', 'Station Name', 'Latitude', 'Longitude', 'MAT', 'MAP'
                 'Transmissivity', 'Cloud Cover', 'Aridity Index']
 
 # Selecting relevant features and target variable
-features = data[['Transmissivity', 'Cloud Cover']]
+features = data[['Transmissivity', 'Cloud Cover', 'Latitude', 'Longitude', 'Aridity Index']]
 target = data['MAT']
 
 # Splitting the data into training and testing sets
