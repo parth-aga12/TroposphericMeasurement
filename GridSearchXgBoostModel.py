@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from xgboost import XGBRegressor
+import matplotlib.pyplot as plt
 
 # Load the dataset
 file_path = '/Users/dakshagrawal/Documents/GitHub/TroposphericMeasurement/Raw_Data.csv'
@@ -62,3 +63,11 @@ print(f'Root Mean Squared Error (RMSE) with best parameters: {rmse_best}')
 # Display the actual vs predicted results
 results_best = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred_best})
 print(results_best)
+
+plt.figure(figsize=(10, 6))
+plt.scatter(y_test, y_pred_best, alpha=0.6)
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
+plt.xlabel('Actual MAT')
+plt.ylabel('Predicted MAT')
+plt.title('Actual vs Predicted Mean Annual Temperature')
+plt.show()

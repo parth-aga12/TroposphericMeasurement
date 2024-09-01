@@ -40,6 +40,7 @@ grid_search.fit(X_train, y_train)
 # Get the best parameters from the grid search
 best_params = grid_search.best_params_
 
+
 # Train the XGBoost Regressor with the best parameters
 best_xgb = XGBRegressor(**best_params, random_state=42)
 best_xgb.fit(X_train, y_train)
@@ -59,7 +60,7 @@ print(f'Root Mean Squared Error (RMSE) with best parameters: {rmse_best}')
 # Display the actual vs predicted results
 results_best = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred_best})
 print(results_best)
-
+print(best_params)
 # Plotting the results
 plt.figure(figsize=(10, 6))
 plt.scatter(y_test, y_pred_best, alpha=0.6)
