@@ -2,16 +2,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from xgboost import XGBRegressor
-import plotly.express as px
+import matplotlib.pyplot as plt
 
-# Load the dataset
 file_path = '/Users/dakshagrawal/Documents/GitHub/TroposphericMeasurement/Raw_Data.csv'
-
-try:
-    data = pd.read_csv(file_path)
-except FileNotFoundError:
-    print("File not found. Please check the file path.")
-    exit()
+data=pd.read_csv(file_path)
 
 # Renaming columns for easier access
 data.columns = ['Site-ID', 'Station Name', 'Latitude', 'Longitude', 'MAT', 'MAP', 
@@ -46,6 +40,7 @@ grid_search.fit(X_train, y_train)
 # Get the best parameters from the grid search
 best_params = grid_search.best_params_
 
+
 # Train the XGBoost Regressor with the best parameters
 best_xgb = XGBRegressor(**best_params, random_state=42)
 best_xgb.fit(X_train, y_train)
@@ -65,15 +60,12 @@ print(f'Root Mean Squared Error (RMSE) with best parameters: {rmse_best}')
 # Display the actual vs predicted results
 results_best = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred_best})
 print(results_best)
-
-# Plotting the results using Plotly
-fig = px.scatter(results_best, x='Actual', y='Predicted', 
-                 labels={'Actual': 'Actual MAT', 'Predicted': 'Predicted MAT'},
-                 title='Actual vs Predicted Mean Annual Temperature')
-fig.add_shape(
-    type='line',
-    line=dict(dash='dash'),
-    x0=results_best['Actual'].min(), y0=results_best['Actual'].min(),
-    x1=results_best['Actual'].max(), y1=results_best['Actual'].max()
-)
-fig.show()
+print(best_params)
+# Plotting the results
+plt.figure(figsize=(10, 6))
+plt.scatter(y_test, y_pred_best, alpha=0.6)
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
+plt.xlabel('Actual MAT')
+plt.ylabel('Predicted MAT')
+plt.title('Actual vs Predicted Mean Annual Temperature')
+plt.show()
